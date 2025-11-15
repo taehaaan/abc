@@ -6,21 +6,22 @@ st.write("이것은 가장 기본적인 Streamlit 예제입니다.")
 import streamlit as st
 import random
 
-st.title("🗡️ 검 강화 게임")
+st.title("⚔️ 간단 턴제 RPG")
 
-# 초기 세션 상태
-if "sword_attack" not in st.session_state:
-    st.session_state.sword_attack = 5  # 초기 공격력
-if "monster_hp" not in st.session_state:
-    st.session_state.monster_hp = 20
+# 초기 상태
 if "player_hp" not in st.session_state:
     st.session_state.player_hp = 30
+if "monster_hp" not in st.session_state:
+    st.session_state.monster_hp = 20
 if "turn" not in st.session_state:
     st.session_state.turn = 1
 
-# 검 강화 함수
-def enhance_sword():
-    success_rate = random.randint(1, 100)
-    if success_rate <= 70:  # 70% 확률로 강화 성공
-        increase = random.randint(2, 5)
-        st.session_state._
+st.subheader(f"턴: {st.session_state.turn}")
+st.write(f"💖 플레이어 HP: {st.session_state.player_hp}")
+st.write(f"👹 몬스터 HP: {st.session_state.monster_hp}")
+
+# 플레이어 공격
+def attack():
+    dmg = random.randint(4, 8)
+    st.session_state.monster_hp -= dmg
+    st.write(f"🗡️ 플레이어가
