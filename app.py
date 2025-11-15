@@ -6,53 +6,50 @@ st.write("이것은 가장 기본적인 Streamlit 예제입니다.")
 import streamlit as st
 import random
 
-st.title("🗡️ 검 강화 게임")
+st.title("🗡️ 검 강화 게임 (이미지)")
 
-# 초기 상태
+# 검 이미지 URL 리스트 (강화 단계별)
+sword_images = [
+    "https://i.imgur.com/7y9U2XQ.png",  # 1단계
+    "https://i.imgur.com/W1lqB9M.png",  # 2단계
+    "https://i.imgur.com/hz2kXkI.png",  # 3단계
+    "https://i.imgur.com/Ux8xH6N.png",  # 4단계
+    "https://i.imgur.com/3pSke9f.png",  # 5단계
+]
+
+# 세션 상태 초기화
+if "sword_level" not in st.session_state:
+    st.session_state.sword_level = 0  # 강화 레벨
 if "sword_attack" not in st.session_state:
-    st.session_state.sword_attack = 5  # 초기 공격력
-if "monster_hp" not in st.session_state:
-    st.session_state.monster_hp = 20
-if "turn" not in st.session_state:
-    st.session_state.turn = 1
+    st.session_state.sword_attack = 5
 
 # 검 강화 함수
 def enhance_sword():
+    if st.session_state.sword_level >= len(sword_images)-1:
+        st.warning("⚔️ 검이 최대 강화입니다!")
+        return
     success_rate = random.randint(1, 100)
-    if success_rate <= 70:  # 70% 확률로 강화 성공
-        increase = random.randint(2, 5)
+    if success_rate <= 70:  # 70% 성공
+        st.session_state.sword_level += 1
+        increase = random.randint(2,5)
         st.session_state.sword_attack += increase
-        st.write(f"🗡️ 검 강화 성공! 공격력이 {increase} 증가하여 {st.session_state.sword_attack}이 되었습니다!")
+        st.success(f"🗡️ 검 강화 성공! 공격력 +{increase} → {st.session_state.sword_attack}")
     else:
-        st.write("💥 검 강화 실패! 공격력은 변하지 않았습니다.")
+        st.error("💥 강화 실패! 공격력 변화 없음.")
 
-# 몬스터 자동 전투
-def monster_turn():
-    damage = random.randint(st.session_state.sword_attack - 2, st.session_state.sword_attack + 2)
-    st.session_state.monster_hp -= damage
-    st.write(f"🗡️ 플레이어가 몬스터에게 {damage} 데미지를 주었습니다!")
+# 현재 검 이미지 표시
+st.image(sword_images[st.session_state.sword_level], width=300)
 
-# 버튼
+st.write(f"⚔️ 현재 공격력: {st.session_state.sword_attack}")
+st.write(f"🆙 강화 레벨: {st.session_state.sword_level + 1} / {len(sword_images)}")
+
+# 강화 버튼
 if st.button("⚒️ 검 강화"):
     enhance_sword()
-    st.session_state.turn += 1
-
-monster_turn()  # 매 턴마다 몬스터 체력 감소
-
-# 상태 출력
-st.subheader(f"턴: {st.session_state.turn}")
-st.write(f"🗡️ 검 공격력: {st.session_state.sword_attack}")
-st.write(f"👹 몬스터 HP: {st.session_state.monster_hp}")
-
-# 승리/패배 체크
-if st.session_state.monster_hp <= 0:
-    st.success("🎉 몬스터 처치! 승리!")
-if st.session_state.sword_attack >= 50:  # 검 강화 최대값
-    st.write("⚔️ 검이 너무 강해져서 더 이상 강화할 수 없습니다!")
+    st.experimental_rerun()
 
 # 리셋 버튼
 if st.button("🔄 리셋"):
+    st.session_state.sword_level = 0
     st.session_state.sword_attack = 5
-    st.session_state.monster_hp = 20
-    st.session_state.turn = 1
     st.experimental_rerun()
