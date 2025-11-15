@@ -18,7 +18,7 @@ guess = st.number_input("숫자를 입력하세요", min_value=1, max_value=20, 
 if st.button("정답 확인"):
     if guess == st.session_state.answer:
         st.success("정답입니다! 🎉")
-        st.session_state.answer = random.randint(1, 20)  # 새 게임 시작
+        st.session_state.answer = random.randint(1, 100)  # 새 게임 시작
         st.info("새로운 숫자가 설정되었습니다!")
     elif guess < st.session_state.answer:
         st.warning("더 큰 숫자입니다!")
