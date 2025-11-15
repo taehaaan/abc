@@ -7,7 +7,7 @@ import streamlit as st
 import random
 
 st.title("🎮 숫자 맞추기 게임")
-st.write("1부터 20 사이의 숫자를 맞춰보세요!")
+st.write("1부터 100사이의 숫자를 맞춰보세요!")
 
 # 세션 상태에 정답 저장하기
 if "answer" not in st.session_state:
