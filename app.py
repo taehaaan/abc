@@ -6,14 +6,14 @@ st.write("이것은 가장 기본적인 Streamlit 예제입니다.")
 import streamlit as st
 import random
 
-st.title("🐸 길건너 친구들")
+st.title("🐸 길건너 친구들 (긴 길 버전)")
 
 WIDTH = 5
-HEIGHT = 5
+HEIGHT = 10  # 길을 길게 확장
 
 # 세션 초기화
 if "player_pos" not in st.session_state:
-    st.session_state.player_pos = [2, 4]  # 시작 위치 (x, y)
+    st.session_state.player_pos = [2, HEIGHT-1]  # 시작 위치 (맨 아래)
 if "obstacles" not in st.session_state:
     st.session_state.obstacles = []  # 장애물 위치
 if "turn" not in st.session_state:
@@ -57,14 +57,14 @@ def move_obstacles():
 def check_collision():
     if st.session_state.player_pos in st.session_state.obstacles:
         st.error("💥 친구가 차량에 부딪혔습니다! 게임 오버!")
-        st.session_state.player_pos = [2, 4]
+        st.session_state.player_pos = [2, HEIGHT-1]
         st.session_state.obstacles = []
 
 # 골대 도착 체크
 def check_goal():
     if st.session_state.player_pos[1] == 0:
         st.success("🎉 친구가 안전하게 골대에 도착했습니다!")
-        st.session_state.player_pos = [2, 4]
+        st.session_state.player_pos = [2, HEIGHT-1]
         st.session_state.obstacles = []
 
 draw_map()
@@ -92,7 +92,7 @@ st.session_state.turn += 1
 
 # 리셋 버튼
 if st.button("🔄 리셋"):
-    st.session_state.player_pos = [2, 4]
+    st.session_state.player_pos = [2, HEIGHT-1]
     st.session_state.obstacles = []
     st.session_state.turn = 1
     st.experimental_rerun()
